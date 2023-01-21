@@ -4,7 +4,9 @@ namespace App\Console\Commands;
 
 use App\Models\ServiceLog;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class InsertLogsCommand extends Command
 {
@@ -13,7 +15,7 @@ class InsertLogsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'logs:insert';
+    protected $signature = 'logs:insert {--file=}';
 
     /**
      * The console command description.
@@ -29,12 +31,15 @@ class InsertLogsCommand extends Command
      */
     public function handle()
     {
-        // read test log file from storage folder.
-        // ofcourse we colud get file name from command argument and check if file exists with try catch!
-        $logs_path = storage_path('logs.txt');
+        try {
+            $handle = fopen($this->option('file'), "r");
+        } catch (Exception $e) {
+            Log::error($e);
+            $this->error('could not open file');
+            return;
+        }
 
-        $handle = fopen($logs_path, "r");
-        $count  = 0;
+        $count = 0;
 
         if ($handle) {
 

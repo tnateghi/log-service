@@ -22,7 +22,7 @@ class ServiceLogTest extends TestCase
     {
         $this->createLogFile(20);
 
-        $this->artisan('logs:insert');
+        $this->artisan('logs:insert', ['--file' => 'storage/app/test-logs-file.txt']);
 
         $this->assertEquals(20, ServiceLog::count());
 
@@ -38,7 +38,7 @@ class ServiceLogTest extends TestCase
     {
         $this->createLogFile(20);
 
-        $this->artisan('logs:insert');
+        $this->artisan('logs:insert', ['--file' => 'storage/app/test-logs-file.txt']);
 
         $response = $this->get('/api/v1/logs/count');
 
