@@ -31,6 +31,8 @@ class InsertLogsCommand extends Command
      */
     public function handle()
     {
+        set_time_limit(-1);
+
         try {
             $handle = fopen($this->option('file'), "r");
         } catch (Exception $e) {
